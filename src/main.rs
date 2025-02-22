@@ -185,6 +185,7 @@ impl App {
         let device = create_logical_device(&entry, &instance, &mut data)?;
         create_swapchain(window, &instance, &device, &mut data)?;
         create_swapchain_image_views(&device, &mut data)?;
+        create_pipeline(&device, &mut data)?;
 
         Ok(Self {
             entry,
@@ -244,6 +245,13 @@ unsafe fn create_swapchain_image_views(device: &Device, data: &mut AppData) -> R
             device.create_image_view(&info, None)
         })
         .collect::<Result<Vec<_>, _>>()?;
+
+    Ok(())
+}
+
+unsafe fn create_pipeline(device: &Device, data: &mut AppData) -> Result<()> {
+    let vert = include_bytes!("../shaders/vert.spv");
+    let frag = include_bytes!("../shaders/frag.spv");
 
     Ok(())
 }
