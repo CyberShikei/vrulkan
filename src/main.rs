@@ -89,6 +89,31 @@ fn get_swapchain_surface_format(formats: &[vk::SurfaceFormatKHR]) -> vk::Surface
         .unwrap_or_else(|| formats[0])
 }
 
+fn get_swapchain_present_mode(present_modes: &[vk::PresentModeKHR]) -> vk::PresentModeKHR {
+    present_modes
+        .iter()
+        .cloned()
+        .find(|m| *m == vk::PresentModeKHR::MAILBOX)
+        .unwrap_or(vk::PresentModeKHR::FIFO)
+}
+
+fn get_swapchain_extent(window: &Window, capabilities: vk::SurfaceCapabilitiesKHR) -> vk::Extent2D {
+    if capabilities.current_extent.width != u32::MAX {
+        capabilities.current_extent
+    } else {
+        vk::Extent2D::builder()
+            .width(window.inner_size().width.clamp(
+                capabilities.min_image_extent.width,
+                capabilities.max_image_extent.width,
+            ))
+            .height(window.inner_size().height.clamp(
+                capabilities.min_image_extent.height,
+                capabilities.max_image_extent.height,
+            ))
+            .build()
+    }
+}
+
 impl App {
     /// Creates our Vulkan app.
     unsafe fn create(window: &Window) -> Result<Self> {
