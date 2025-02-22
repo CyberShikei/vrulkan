@@ -52,7 +52,11 @@ struct AppData {
     physical_device: vk::PhysicalDevice,
     graphics_queue: vk::Queue,
     present_queue: vk::Queue,
+
     swapchain: vk::SwapchainKHR,
+    swapchain_format: vk::Format,
+    swapchain_extent: vk::Extent2D,
+    swapchain_images: Vec<vk::Image>,
 }
 
 #[derive(Clone, Debug)]
@@ -159,6 +163,10 @@ unsafe fn create_swapchain(
         .present_mode(present_mode)
         .clipped(true)
         .old_swapchain(vk::SwapchainKHR::null());
+    
+    dara.swapchain = device.create_swapchain_khr(&info, None)?;
+    data.swapchain_images = device.get_swapchain_images_khr(data.swapchain)?;
+    
     Ok(())
 }
 
