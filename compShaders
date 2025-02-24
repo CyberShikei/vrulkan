@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd shaders
+./compile.sh && cd ../; cargo run
