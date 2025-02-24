@@ -2,7 +2,7 @@
 
 This a shader rendering engine running on Vulkan libraries, and built in Rust
 
-!(./icon.png)
+![icon](./icon.png)
 
 # Usage
 run these in shell if you have `cargo build` then `cargo run`
